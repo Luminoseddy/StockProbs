@@ -23,7 +23,6 @@ export default function AuthContent({ isLogin, onAuthenticate }) {
     confirmPassword: false,
   });
 
-
   function switchAuthModeHandler() {
     // if true, send to signup Pg. 
     if (isLogin){
@@ -71,7 +70,9 @@ export default function AuthContent({ isLogin, onAuthenticate }) {
       />
       {/* Button Allows us to switch between signup and login screen  */}
       <View style={[styles.buttons, styles.text]}>
+        
         <FlatButton onPress={switchAuthModeHandler} >
+          
           {isLogin ? 'Create new account' : 'Log in instead'}
         </FlatButton>
       </View>
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 32,
     padding: 16,
     borderRadius: 8,
-    backgroundColor: Colors.boxContainer,
+    backgroundColor: "black",
     elevation: 2,
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },

@@ -1,17 +1,15 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { StatusBar } from 'expo-status-bar';
 
-import { View, ImageBackground, StyleSheet } from 'react-native';
+
+import { View, ImageBackground, StyleSheet, Text } from 'react-native';
 
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import HomeScreen from './screens/HomeScreen';
-import { Colors } from './constants/LoginSignupStyle';
-
 
 const Stack = createNativeStackNavigator();
-const image = { uri: "https://images.unsplash.com/photo-1548700819-1be123bc6aef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80" };
+const image = { uri: "https://images.unsplash.com/photo-1633158829875-e5316a358c6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" };
 
 // Screen displays un-authenticated users. 
 function AuthStack() {
@@ -20,9 +18,10 @@ function AuthStack() {
       <ImageBackground source={image} style={styles.image}>
         <Stack.Navigator
           screenOptions={{
+            animation: 'none',
             headerStyle: { backgroundColor: '#196719' },
             headerTintColor: 'blue',
-            contentStyle: { backgroundColor: '#84e184' },
+            contentStyle: { backgroundColor: null },
           }}
         >
           <Stack.Screen name="Login" component={LoginScreen} />
@@ -38,9 +37,9 @@ function AuthenticatedStack() {
     // Screen displays authenticated users.
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: Colors.header },
+        headerStyle: { backgroundColor: "#196719" },
         headerTintColor: 'orange',
-        contentStyle: { backgroundColor: Colors.background },
+        contentStyle: { backgroundColor: "#196719" },
       }}
     >
       <Stack.Screen name="Home" component={HomeScreen} />
@@ -59,7 +58,6 @@ function Navigation() {
 export default function App() {
   return (
     <>
-      {/* <StatusBar style="light" /> */}
       <Navigation />
     </>
   );
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   text: {
     color: "white",
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
     lineHeight: 84,
     fontWeight: "bold",
     textAlign: "center",
-    // backgroundColor: "#000000c0"
+    backgroundColor: "#000000c0"
   }
 });
 
