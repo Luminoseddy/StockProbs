@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import FlatButton from '../ui/FlatButton';
 import AuthForm from './AuthForm';
-import { Colors } from '../../constants/LoginSignupStyle';
+
 
 // isLogin Prop is set in "loginScreen" and not in the "SignupScreen";
 // false for signupScreen, true for loginScreen.
@@ -70,9 +70,7 @@ export default function AuthContent({ isLogin, onAuthenticate }) {
       />
       {/* Button Allows us to switch between signup and login screen  */}
       <View style={[styles.buttons, styles.text]}>
-        
-        <FlatButton onPress={switchAuthModeHandler} >
-          
+        <FlatButton onPress={switchAuthModeHandler} >   
           {isLogin ? 'Create new account' : 'Log in instead'}
         </FlatButton>
       </View>
