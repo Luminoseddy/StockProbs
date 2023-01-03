@@ -7,6 +7,7 @@ import { View, ImageBackground, StyleSheet, Text } from 'react-native';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import HomeScreen from './screens/HomeScreen';
+import AuthContextProvider from './dataStorage/auth-context';
 
 const Stack = createNativeStackNavigator();
 const image = { uri: "https://images.unsplash.com/photo-1633158829875-e5316a358c6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" };
@@ -32,9 +33,10 @@ function AuthStack() {
   );
 }
 
+
 function AuthenticatedStack() {
   return (
-    // Screen displays authenticated users.
+    // Screen displays authenticated users - users loggewd in.
     <Stack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: "#196719" },
@@ -58,14 +60,13 @@ function Navigation() {
 export default function App() {
   return (
     <>
-      <Navigation />
+      <AuthContextProvider>
+        <Navigation />
+      </AuthContextProvider>
+
     </>
   );
 }
-
-
-
-
 
 
 const styles = StyleSheet.create({
