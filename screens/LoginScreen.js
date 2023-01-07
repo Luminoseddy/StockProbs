@@ -21,8 +21,9 @@ export default function LoginScreen() {
       authContx.authenticate(token);
     } catch (error) {
       Alert.alert('Credentials failed', 'Check your email/password or try again later.');
+      setIsAuthenticating(false); 
     }
-    setIsAuthenticating(false);
+    
   }
 
   // Loading state - spinner while it waits to send reuqest. 

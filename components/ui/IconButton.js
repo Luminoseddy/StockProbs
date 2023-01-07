@@ -1,25 +1,38 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 // import { Ionicons } from '@expo/vector-icons';
 
-function IconButton({ icon, color, size, onPress }) {
+export default function IconButton({ onPress }) {
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      // onPress={(onPress) => console.log('Log out tapped')}
       onPress={onPress}
+      style={({ pressed }) =>
+      [pressed ? styles.pressedButton : styles.unpressedButton, styles.buttonWrapper]}
     >
-      <Ionicons name={icon} color={color} size={size} />
+      <Text style={styles.text}>Log out</Text>
     </Pressable>
   );
 }
 
-export default IconButton;
-
-const styles = StyleSheet.create({
-  button: {
-    margin: 8,
-    borderRadius: 20,
+const styles = ({
+  pressedButton: {
+    backgroundColor: 'purple',
   },
-  pressed: {
-    opacity: 0.7,
+  unpressedButton: {
+    backgroundColor: 'red',
+  },
+  buttonWrapper: {
+    // opacity: 0.5,
+    margin: 10,
+    borderRadius: 1,
+    padding: 4,
+    width: 70,
+    height: 25,
+  },
+  text: {
+    fontSize: 18,
+    justifyContent: "center",
+    
   },
 });
+
