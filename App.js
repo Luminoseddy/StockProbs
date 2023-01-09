@@ -1,13 +1,15 @@
+import { useContext, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, ImageBackground, StyleSheet, Text } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import HomeScreen from './screens/HomeScreen';
 import IconButton from './components/ui/IconButton';
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
-import { useContext } from 'react';
+
 
 const Stack = createNativeStackNavigator();
 const image = { uri: "https://images.unsplash.com/photo-1633158829875-e5316a358c6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" };
@@ -38,7 +40,6 @@ function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
   return (
     // Screen displays authenticated users - users logged in.
-
     <Stack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: "#196719" },
@@ -46,7 +47,6 @@ function AuthenticatedStack() {
         contentStyle: { backgroundColor: "#196719" },
       }}
     >
-
       <Stack.Screen
         name="Home"
         component={HomeScreen}
@@ -56,7 +56,7 @@ function AuthenticatedStack() {
               icon="exit"
               color={tintColor}
               size={24}
-              onPress= {authCtx.logout} // called from auth-context.js
+              onPress={authCtx.logout} // called from auth-context.js
             />
           )
         }}
@@ -79,13 +79,42 @@ function Navigation() {
   );
 }
 
+function Root() {
+  // Apply loading screen using state.
+  const [isTryingLogin, setIsTryingLogin] = useState(true);
+
+  const authCtx = useContext(AuthContext);
+
+  // provide function and dependencies array,   
+  useEffect(() => {
+    // returns a promise, the stored token retrieved from async storage
+    async function fetchToken() {
+      const storedToken = await AsyncStorage.getItem('token');
+
+      if (storedToken) {
+        // If true, autolog and load app from where user last left off, 
+        // else, start app from signup/login
+        authCtx.authenticate(storedToken);
+      }
+      // wether token is found or not, we set loading to false afterwards
+      setIsTryingLogin(false);
+    }
+    fetchToken();
+  }, []);
+
+  if (isTryingLogin) {
+    
+    return "";
+  }
+  return <Navigation />;
+}
+
 export default function App() {
   return (
     <>
       <AuthContextProvider>
-        <Navigation />
+        <Root />
       </AuthContextProvider>
-
     </>
   );
 }

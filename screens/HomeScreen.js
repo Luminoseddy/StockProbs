@@ -16,8 +16,7 @@ function HomeScreen() {
   // get data from 'message node' firebase
   useEffect(() => {
     // attaching token to outgoing request to proof token is authenticated to FB
-    axios.get('https://stockprobs-9087b-default-rtdb.firebaseio.com/message.json?auth=' + 
-    token
+    axios.get('https://stockprobs-9087b-default-rtdb.firebaseio.com/message.json?auth=' + token
     ).then((response) => {
       setFetchedMessage(response.data); // recieving text
       console.log(response.data);
@@ -29,9 +28,7 @@ function HomeScreen() {
       <Text style={styles.title}>Home!</Text>
       <Text>You authenticated successfully!</Text>
       <Text>{fetchedMessage}</Text>
-      
     </View>
-
   );
 }
 
