@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from 'react-native';
 // import { Ionicons } from '@expo/vector-icons';
 
-export default function IconButton({ onPress }) {
+export default function HeaderRightButton({ onPress }) {
   return (
     <Pressable
       // onPress={(onPress) => console.log('Log out tapped')}

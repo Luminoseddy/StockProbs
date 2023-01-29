@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { useContext, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,10 +8,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import HomeScreen from './screens/HomeScreen';
-import IconButton from './components/ui/IconButton';
+import HeaderRightButton from './components/ui/HeaderRightButton';
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
+const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const image = { uri: "https://images.unsplash.com/photo-1633158829875-e5316a358c6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" };
 
@@ -27,6 +30,7 @@ function AuthStack() {
             contentStyle: { backgroundColor: null },
           }}
         >
+          {/* Routers  */}
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
         </Stack.Navigator >
@@ -35,34 +39,44 @@ function AuthStack() {
   );
 }
 
+function MyProfile({ navigation }) {
+  return (
+    // <View style={styles.layout}>
+    <View>
+      <Text>Edit profile here</Text>
+    </View>
+  );
+}
+function TopMovers({ navigation }) {
+  return (
+    // <View style={styles.layout}>
+    <View>
+      <Text>Top movers today</Text>
+    </View>
+  );
+}
+
 
 function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
   return (
-    // Screen displays authenticated users - users logged in.
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: "#196719" },
-        headerTintColor: 'orange',
-        contentStyle: { backgroundColor: "#196719" },
-      }}
-    >
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerRight: ({ tintColor }) => (
-            <IconButton
-              icon="exit"
-              color={tintColor}
-              size={24}
-              onPress={authCtx.logout} // called from auth-context.js
-            />
-          )
-        }}
-      />
-    </Stack.Navigator>
-  );
+    <Drawer.Navigator initialRouteName="Home" screenOptions={{
+      headerStyle: { backgroundColor: "#196719" },
+      headerTintColor: 'orange',
+      contentStyle: { backgroundColor: "#196719" },
+    }}>
+      <Drawer.Screen name="Home" component={HomeScreen} options={{
+        headerRight: ({ tintColor }) => (
+          <HeaderRightButton
+            color={tintColor}
+            size={24}
+            onPress={authCtx.logout} // called from auth-context.js
+          />
+        )
+      }} />
+      <Drawer.Screen name="MyProfile" component={MyProfile} />
+      <Drawer.Screen name="TodaysTopMovers" component={TopMovers} />
+    </Drawer.Navigator>);
 }
 
 function Navigation() {
@@ -82,7 +96,6 @@ function Navigation() {
 function Root() {
   // Apply loading screen using state.
   const [isTryingLogin, setIsTryingLogin] = useState(true);
-
   const authCtx = useContext(AuthContext);
 
   // provide function and dependencies array,   
@@ -103,7 +116,7 @@ function Root() {
   }, []);
 
   if (isTryingLogin) {
-    
+    // Needs loading screen here. 
     return "";
   }
   return <Navigation />;
@@ -118,7 +131,6 @@ export default function App() {
     </>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

@@ -6,7 +6,7 @@ import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../dataStorage/auth-context';
 
 // Screen only for authenticated users.
-function HomeScreen() {
+export default function HomeScreen() {
   const [fetchedMessage, setFetchedMessage] = useState('');
 
   authCtx = useContext(AuthContext);
@@ -32,7 +32,6 @@ function HomeScreen() {
   );
 }
 
-export default HomeScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
