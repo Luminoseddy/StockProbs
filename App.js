@@ -2,17 +2,24 @@ import 'react-native-gesture-handler';
 import { useContext, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, ImageBackground, StyleSheet, Text } from 'react-native'
+import { View, ImageBackground, StyleSheet } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
-import HomeScreen from './screens/HomeScreen';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import HeaderRightButton from './components/ui/HeaderRightButton';
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import ExploreScreen from './screens/ExploreScreen';
+import Favorites from './screens/FavoritesScreen';
+import HomeScreenStack from './screens/HomeScreen';
+import MyProfileStack from './screens/MyProfileScreen';
+import TopMovers from './screens/TopMoversScreen';
 
 
+const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const image = { uri: "https://images.unsplash.com/photo-1633158829875-e5316a358c6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" };
@@ -39,33 +46,16 @@ function AuthStack() {
   );
 }
 
-function MyProfile({ navigation }) {
-  return (
-    // <View style={styles.layout}>
-    <View>
-      <Text>Edit profile here</Text>
-    </View>
-  );
-}
-function TopMovers({ navigation }) {
-  return (
-    // <View style={styles.layout}>
-    <View>
-      <Text>Top movers today</Text>
-    </View>
-  );
-}
-
-
 function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
+
   return (
-    <Drawer.Navigator initialRouteName="Home" screenOptions={{
-      headerStyle: { backgroundColor: "#196719" },
-      headerTintColor: 'orange',
-      contentStyle: { backgroundColor: "#196719" },
-    }}>
-      <Drawer.Screen name="Home" component={HomeScreen} options={{
+    <Drawer.Navigator initialRouteName="Home"
+      screenOptions={{
+        headerStyle: { backgroundColor: "#196719" },
+        headerTintColor: 'orange',
+        contentStyle: { backgroundColor: "#196719" },
+        tabBarPosition: 'bottom',
         headerRight: ({ tintColor }) => (
           <HeaderRightButton
             color={tintColor}
@@ -73,18 +63,27 @@ function AuthenticatedStack() {
             onPress={authCtx.logout} // called from auth-context.js
           />
         )
+      }}>
+      <Drawer.Screen name="Home" component={HomeScreenStack} options={{
+        drawerItemStyle: { height: 0 }
       }} />
-      <Drawer.Screen name="MyProfile" component={MyProfile} />
+      <Drawer.Screen name="ExploreScreen" component={ExploreScreen} options={{
+        drawerItemStyle: { height: 0 }
+      }} />
+      <Drawer.Screen name="Favorites" component={Favorites} options={{
+        drawerItemStyle: { height: 0 }
+      }} />
+      <Drawer.Screen name="MyProfile" component={MyProfileStack} />
       <Drawer.Screen name="TodaysTopMovers" component={TopMovers} />
-    </Drawer.Navigator>);
+    </Drawer.Navigator>
+  )
 }
 
 function Navigation() {
   const authCtx = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {/* Screen Protection */}
-      {/* wrap with {} to render it dynamically */}
+      {/* Screen Protection;  wrap with {} to render it dynamically */}
       {/* If not authenticated (not true), render AuthStack */}
       {!authCtx.isAuthenticated && <AuthStack />}
       {/* If authenticated (true), render AuthStack */}
@@ -126,6 +125,7 @@ export default function App() {
   return (
     <>
       <AuthContextProvider>
+
         <Root />
       </AuthContextProvider>
     </>
