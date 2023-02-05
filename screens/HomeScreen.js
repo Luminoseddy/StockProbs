@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../dataStorage/auth-context';
 
+
 // Screen only for authenticated users.
 export default function HomeScreen() {
   const [fetchedMessage, setFetchedMessage] = useState('');
@@ -22,16 +23,19 @@ export default function HomeScreen() {
       console.log(response.data);
     });
   }, [token]);
-
   return (
+
+
+
+
     <View style={styles.rootContainer}>
       <Text style={styles.title}>Home!</Text>
       <Text>You authenticated successfully!</Text>
       <Text>{fetchedMessage}</Text>
+     
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -46,3 +50,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 });
+
+// -- Home screen
+// Top Movers
+// Favorites
+// News from list of favorites
+
+// -- Explore Screen
+// Search
+// Button that adds to favorites
+// Display current day status of stock
+// Button that pops up a probability window

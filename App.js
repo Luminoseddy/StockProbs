@@ -2,19 +2,26 @@ import 'react-native-gesture-handler';
 import { useContext, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, ImageBackground, StyleSheet, Text } from 'react-native'
+import { View, ImageBackground, StyleSheet, Text, Button } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+
+import HeaderRightButton from './components/ui/HeaderRightButton';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
-import HomeScreen from './screens/HomeScreen';
-import HeaderRightButton from './components/ui/HeaderRightButton';
+import Favorites from './screens/FavoritesScreen';
+import Home from './screens/HomeScreen';
+import Explore from './screens/ExploreScreen';
+import Settings from './screens/SettingsScreen';
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
-const Drawer = createDrawerNavigator();
+// const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
 const image = { uri: "https://images.unsplash.com/photo-1633158829875-e5316a358c6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" };
 
 // Screen displays un-authenticated users. 
@@ -39,33 +46,16 @@ function AuthStack() {
   );
 }
 
-function MyProfile({ navigation }) {
-  return (
-    // <View style={styles.layout}>
-    <View>
-      <Text>Edit profile here</Text>
-    </View>
-  );
-}
-function TopMovers({ navigation }) {
-  return (
-    // <View style={styles.layout}>
-    <View>
-      <Text>Top movers today</Text>
-    </View>
-  );
-}
-
-
-function AuthenticatedStack() {
+function MyTabs() {
   const authCtx = useContext(AuthContext);
   return (
-    <Drawer.Navigator initialRouteName="Home" screenOptions={{
-      headerStyle: { backgroundColor: "#196719" },
-      headerTintColor: 'orange',
-      contentStyle: { backgroundColor: "#196719" },
-    }}>
-      <Drawer.Screen name="Home" component={HomeScreen} options={{
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarStyle: { position: 'absolute' },
+        headerStyle: { backgroundColor: "#196719" },
+        headerTintColor: 'orange',
+        contentStyle: { backgroundColor: "#196719" },
         headerRight: ({ tintColor }) => (
           <HeaderRightButton
             color={tintColor}
@@ -73,10 +63,46 @@ function AuthenticatedStack() {
             onPress={authCtx.logout} // called from auth-context.js
           />
         )
-      }} />
-      <Drawer.Screen name="MyProfile" component={MyProfile} />
-      <Drawer.Screen name="TodaysTopMovers" component={TopMovers} />
-    </Drawer.Navigator>);
+      }}>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Explore" component={Explore} />
+      <Tab.Screen name="Favorites" component={Favorites} />
+      <Tab.Screen name="Settings" component={Settings} />
+    </Tab.Navigator>
+  );
+}
+
+function AuthenticatedStack() {
+
+  return (
+    <MyTabs />
+    // <DrawerItemList
+    //   initialRouteName="MyProfile"
+    //   screenOptions={{
+    //     headerStyle: { backgroundColor: "#196719" },
+    //     headerTintColor: 'orange',
+    //     contentStyle: { backgroundColor: "#196719" },
+    //     headerRight: ({ tintColor }) => (
+    //       <HeaderRightButton
+    //         color={tintColor}
+    //         size={24}
+    //         onPress={authCtx.logout} // called from auth-context.js
+    //       />
+    //     )
+    //   }}
+    // >
+    //   <Drawer.Screen
+    //     name="MyProfile"
+    //     component={MyProfile}
+    //   />
+    //   <Drawer.Screen
+    //     name="TodaysTopMovers"
+    //     component={TopMovers}
+    //     MyTabs
+
+    //   />
+    // </DrawerItemList>
+  );
 }
 
 function Navigation() {
