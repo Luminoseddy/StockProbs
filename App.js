@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 import { useContext, useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, CommonActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, ImageBackground, StyleSheet, Text, Button } from 'react-native'
+import { View, ImageBackground, StyleSheet, Text, Button, SafeAreaView, ScrollView, } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
@@ -14,13 +14,22 @@ import Favorites from './screens/FavoritesScreen';
 import Home from './screens/HomeScreen';
 import Explore from './screens/ExploreScreen';
 import Settings from './screens/SettingsScreen';
+import TopMovers from './screens/TopMoversScreen'
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MyProfile from './screens/MyProfileScreen';
+
+import { createStackNavigator } from '@react-navigation/stack'
 
 
-// const Drawer = createDrawerNavigator();
-const Stack = createNativeStackNavigator();
+
+
+const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
+
+const Stack = createStackNavigator()
+const DrawerStack = createDrawerNavigator()
+const BottomStack = createBottomTabNavigator()
 
 const image = { uri: "https://images.unsplash.com/photo-1633158829875-e5316a358c6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" };
 
@@ -46,13 +55,44 @@ function AuthStack() {
   );
 }
 
-function MyTabs() {
-  const authCtx = useContext(AuthContext);
+// function MyTabs() {
+//   const authCtx = useContext(AuthContext);
+//   return (
+//     <Tab.Navigator
+//       initialRouteName="Home"
+//       screenOptions={{
+//         tabBarStyle: { position: 'absolute' },
+//         headerStyle: { backgroundColor: "#196719" },
+//         headerTintColor: 'orange',
+//         contentStyle: { backgroundColor: "#196719" },
+//         headerRight: ({ tintColor }) => (
+//           <HeaderRightButton
+//             color={tintColor}
+//             size={24}
+//             onPress={authCtx.logout} // called from auth-context.js
+//           />
+//         )
+//       }}
+//     >
+//       <Tab.Screen name="Home" component={Home} />
+//       <Tab.Screen name="Explore" component={Explore} />
+//       <Tab.Screen name="Favorites" component={Favorites} />
+//       <Tab.Screen name="Settings" component={Settings} />
+//       <Tab.Screen name="MyProfile" component={MyProfile}
+//         options={{
+//           tabBarButton: () => null,
+//           tabBarVisible: false //hide tab bar on this screen
+
+//         }} />
+//     </Tab.Navigator>
+//   );
+// }
+
+// Drawer code
+function AppDrawerStack() {
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
+    <DrawerStack.Navigator drawerContent={props => <DrawerView {...props} />}
       screenOptions={{
-        tabBarStyle: { position: 'absolute' },
         headerStyle: { backgroundColor: "#196719" },
         headerTintColor: 'orange',
         contentStyle: { backgroundColor: "#196719" },
@@ -64,46 +104,87 @@ function MyTabs() {
           />
         )
       }}>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Explore" component={Explore} />
-      <Tab.Screen name="Favorites" component={Favorites} />
-      <Tab.Screen name="Settings" component={Settings} />
-    </Tab.Navigator>
-  );
+      <DrawerStack.Screen name='Logo2Home' component={AppBottomStack} />
+      <DrawerStack.Screen name='MyProfile' component={MyProfile} />
+      <DrawerStack.Screen name='Settings' component={Settings} />
+
+
+    </DrawerStack.Navigator>
+  )
 }
+function DrawerView({ navigation, route }) {
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+
+        <Button
+          title="Home"
+          onPress={() => {
+            navigation.reset({
+              index: 1,
+              routes: [
+                { name: 'Home' },
+              ],
+            });
+            navigation.navigate('Home')
+          }
+          }
+        />
+
+        <Button style={styles.buttons}
+          onPress={() => navigation.navigate('MyProfile')}
+          title="My Profile"
+          color="#196719"
+
+        />
+
+        <Button style={styles.buttons}
+          onPress={() => navigation.navigate('Settings')}
+          title="Settings"
+          color="#196719"
+
+        />
+      </ScrollView>
+    </SafeAreaView>
+  )
+}
+
+// Bottom Stack Part
+function AppBottomStack({ navigation, route }) {
+  return (
+    <BottomStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+
+      <BottomStack.Screen
+        name="Home"
+        component={Home}
+
+      />
+
+
+      <BottomStack.Screen
+        name="Favorites"
+        component={Favorites}
+      />
+
+    </BottomStack.Navigator>
+  )
+}
+
+
 
 function AuthenticatedStack() {
-
+  const authCtx = useContext(AuthContext);
   return (
-    <MyTabs />
-    // <DrawerItemList
-    //   initialRouteName="MyProfile"
-    //   screenOptions={{
-    //     headerStyle: { backgroundColor: "#196719" },
-    //     headerTintColor: 'orange',
-    //     contentStyle: { backgroundColor: "#196719" },
-    //     headerRight: ({ tintColor }) => (
-    //       <HeaderRightButton
-    //         color={tintColor}
-    //         size={24}
-    //         onPress={authCtx.logout} // called from auth-context.js
-    //       />
-    //     )
-    //   }}
-    // >
-    //   <Drawer.Screen
-    //     name="MyProfile"
-    //     component={MyProfile}
-    //   />
-    //   <Drawer.Screen
-    //     name="TodaysTopMovers"
-    //     component={TopMovers}
-    //     MyTabs
-
-    //   />
-    // </DrawerItemList>
+    <Stack.Navigator screenOptions={{ headerShown: false, }}>
+      <Stack.Screen name="Logged in" component={AppDrawerStack} options={{ title: "Home", }} />
+    </Stack.Navigator>
   );
 }
+
 
 function Navigation() {
   const authCtx = useContext(AuthContext);
@@ -174,5 +255,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     backgroundColor: "#000000c0"
   }
+
 });
 
