@@ -1,13 +1,15 @@
 import 'react-native-gesture-handler';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, React } from 'react';
+
+
 import { NavigationContainer, CommonActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, ImageBackground, StyleSheet, Text, Button, SafeAreaView, ScrollView, } from 'react-native'
+import { View, ImageBackground, StyleSheet, Button, SafeAreaView, ScrollView, ActivityIndicator, } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 
-import HeaderRightButton from './components/ui/HeaderRightButton';
+
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import Favorites from './screens/FavoritesScreen';
@@ -23,10 +25,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 
 
-
-const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
-
+state = { active: null };
 const Stack = createStackNavigator()
 const DrawerStack = createDrawerNavigator()
 const BottomStack = createBottomTabNavigator()
@@ -43,6 +42,7 @@ function AuthStack() {
             animation: 'none',
             headerStyle: { backgroundColor: '#196719' },
             headerTintColor: 'blue',
+
             contentStyle: { backgroundColor: null },
           }}
         >
@@ -55,68 +55,37 @@ function AuthStack() {
   );
 }
 
-// function MyTabs() {
-//   const authCtx = useContext(AuthContext);
-//   return (
-//     <Tab.Navigator
-//       initialRouteName="Home"
-//       screenOptions={{
-//         tabBarStyle: { position: 'absolute' },
-//         headerStyle: { backgroundColor: "#196719" },
-//         headerTintColor: 'orange',
-//         contentStyle: { backgroundColor: "#196719" },
-//         headerRight: ({ tintColor }) => (
-//           <HeaderRightButton
-//             color={tintColor}
-//             size={24}
-//             onPress={authCtx.logout} // called from auth-context.js
-//           />
-//         )
-//       }}
-//     >
-//       <Tab.Screen name="Home" component={Home} />
-//       <Tab.Screen name="Explore" component={Explore} />
-//       <Tab.Screen name="Favorites" component={Favorites} />
-//       <Tab.Screen name="Settings" component={Settings} />
-//       <Tab.Screen name="MyProfile" component={MyProfile}
-//         options={{
-//           tabBarButton: () => null,
-//           tabBarVisible: false //hide tab bar on this screen
-
-//         }} />
-//     </Tab.Navigator>
-//   );
-// }
 
 // Drawer code
-function AppDrawerStack() {
+function AppDrawerStack({ navigation }) {
+
   return (
-    <DrawerStack.Navigator drawerContent={props => <DrawerView {...props} />}
+    <DrawerStack.Navigator
+      drawerContent={props => <DrawerView {...props} />}
       screenOptions={{
         headerStyle: { backgroundColor: "#196719" },
         headerTintColor: 'orange',
+        itemStyle: { marginVertical: 30 },
         contentStyle: { backgroundColor: "#196719" },
-        headerRight: ({ tintColor }) => (
-          <HeaderRightButton
-            color={tintColor}
-            size={24}
-            onPress={authCtx.logout} // called from auth-context.js
+        headerRight: () => (
+          <Button
+            onPress={() => navigation.navigate('TestingData')}
+            title="Search"
+            color="#fff"
           />
-        )
+        ),
       }}>
       <DrawerStack.Screen name='Logo2Home' component={AppBottomStack} />
       <DrawerStack.Screen name='MyProfile' component={MyProfile} />
       <DrawerStack.Screen name='Settings' component={Settings} />
+    </DrawerStack.Navigator >
 
-
-    </DrawerStack.Navigator>
   )
 }
-function DrawerView({ navigation, route }) {
+function DrawerView({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-
         <Button
           title="Home"
           onPress={() => {
@@ -133,16 +102,20 @@ function DrawerView({ navigation, route }) {
 
         <Button style={styles.buttons}
           onPress={() => navigation.navigate('MyProfile')}
-          title="My Profile"
-          color="#196719"
+          title="My Profile">
+        </Button>
 
-        />
 
         <Button style={styles.buttons}
           onPress={() => navigation.navigate('Settings')}
           title="Settings"
-          color="#196719"
+        />
 
+        <Button style={styles.buttons}
+          title="Logout"
+          color={"red"}
+
+          onPress={authCtx.logout}
         />
       </ScrollView>
     </SafeAreaView>
@@ -150,18 +123,18 @@ function DrawerView({ navigation, route }) {
 }
 
 // Bottom Stack Part
-function AppBottomStack({ navigation, route }) {
+function AppBottomStack() {
   return (
     <BottomStack.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarActiveBackgroundColor: "#F6FF6F"
       }}
     >
 
       <BottomStack.Screen
         name="Home"
         component={Home}
-
       />
 
 
@@ -178,6 +151,15 @@ function AppBottomStack({ navigation, route }) {
 
 function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
+  // type SearchBarComponentProps = {};
+
+  // const SwitchComponent: React.FunctionComponent<SearchBarComponentProps> = () => {
+  const [search, setSearch] = useState("");
+
+  const updateSearch = (search) => {
+    setSearch(search);
+  };
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, }}>
       <Stack.Screen name="Logged in" component={AppDrawerStack} options={{ title: "Home", }} />
@@ -224,7 +206,8 @@ function Root() {
 
   if (isTryingLogin) {
     // Needs loading screen here. 
-    return "";
+    return <ActivityIndicator size="small" color="#0000ff" />
+
   }
   return <Navigation />;
 }
@@ -254,6 +237,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     backgroundColor: "#000000c0"
+  },
+  buttons: {
+    color: "#196719",
   }
 
 });
