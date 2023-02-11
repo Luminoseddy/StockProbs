@@ -25,14 +25,10 @@ export default function HomeScreen() {
   }, [token]);
   return (
 
-
-
-
     <View style={styles.rootContainer}>
       <Text style={styles.title}>Home!</Text>
-      {/* <Text>You authenticated successfully!</Text>
-      <Text>{fetchedMessage}</Text> */}
-     
+      <Text>You authenticated successfully!</Text>
+      <Text>{fetchedMessage}</Text> 
     </View>
   );
 }

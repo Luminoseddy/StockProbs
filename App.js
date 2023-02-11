@@ -16,6 +16,7 @@ import Favorites from './screens/FavoritesScreen';
 import Home from './screens/HomeScreen';
 import Explore from './screens/ExploreScreen';
 import Settings from './screens/SettingsScreen';
+import Search from "./screens/SearchBarScreen"
 import TopMovers from './screens/TopMoversScreen'
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -42,7 +43,6 @@ function AuthStack() {
             animation: 'none',
             headerStyle: { backgroundColor: '#196719' },
             headerTintColor: 'blue',
-
             contentStyle: { backgroundColor: null },
           }}
         >
@@ -69,15 +69,17 @@ function AppDrawerStack({ navigation }) {
         contentStyle: { backgroundColor: "#196719" },
         headerRight: () => (
           <Button
-            onPress={() => navigation.navigate('TestingData')}
+            onPress={() => navigation.navigate('Search')}
             title="Search"
-            color="#fff"
+            color="white"
+
           />
         ),
       }}>
       <DrawerStack.Screen name='Logo2Home' component={AppBottomStack} />
       <DrawerStack.Screen name='MyProfile' component={MyProfile} />
       <DrawerStack.Screen name='Settings' component={Settings} />
+      <DrawerStack.Screen name='Search' component={Search} />
     </DrawerStack.Navigator >
 
   )
@@ -96,8 +98,7 @@ function DrawerView({ navigation }) {
               ],
             });
             navigation.navigate('Home')
-          }
-          }
+          }}
         />
 
         <Button style={styles.buttons}
@@ -114,7 +115,6 @@ function DrawerView({ navigation }) {
         <Button style={styles.buttons}
           title="Logout"
           color={"red"}
-
           onPress={authCtx.logout}
         />
       </ScrollView>
@@ -151,15 +151,6 @@ function AppBottomStack() {
 
 function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
-  // type SearchBarComponentProps = {};
-
-  // const SwitchComponent: React.FunctionComponent<SearchBarComponentProps> = () => {
-  const [search, setSearch] = useState("");
-
-  const updateSearch = (search) => {
-    setSearch(search);
-  };
-
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, }}>
       <Stack.Screen name="Logged in" component={AppDrawerStack} options={{ title: "Home", }} />
@@ -240,7 +231,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     color: "#196719",
-  }
+  },
 
 });
 
