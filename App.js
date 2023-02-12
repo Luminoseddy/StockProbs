@@ -16,7 +16,7 @@ import Favorites from './screens/FavoritesScreen';
 import Home from './screens/HomeScreen';
 import Explore from './screens/ExploreScreen';
 import Settings from './screens/SettingsScreen';
-import Search from "./screens/SearchBarScreen"
+import Search from "./screens/SearchBarScreen";
 import TopMovers from './screens/TopMoversScreen'
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
