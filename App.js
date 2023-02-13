@@ -16,7 +16,7 @@ import Favorites from './screens/FavoritesScreen';
 import Home from './screens/HomeScreen';
 import Explore from './screens/ExploreScreen';
 import Settings from './screens/SettingsScreen';
-import Search from "./screens/SearchBarScreen";
+import { SearchBarScreen } from "./screens/SearchBarScreen";
 import TopMovers from './screens/TopMoversScreen'
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -72,14 +72,14 @@ function AppDrawerStack({ navigation }) {
             onPress={() => navigation.navigate('Search')}
             title="Search"
             color="white"
-
           />
         ),
       }}>
+
       <DrawerStack.Screen name='Logo2Home' component={AppBottomStack} />
       <DrawerStack.Screen name='MyProfile' component={MyProfile} />
       <DrawerStack.Screen name='Settings' component={Settings} />
-      <DrawerStack.Screen name='Search' component={Search} />
+      <DrawerStack.Screen name='Search' component={SearchBarScreen} />
     </DrawerStack.Navigator >
 
   )
