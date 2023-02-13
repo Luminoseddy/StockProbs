@@ -1,10 +1,8 @@
-import React, { useCallback, useMemo, useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Button, FlatList, Platform, } from 'react-native';
+import React, { useCallback, useState, } from 'react';
+import { View, Text, TextInput, StyleSheet, Button, } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Item } from '../dataStorage/Item';
-
-import Sorting from '../utility/Sorting';
+import { Item } from '../dataStorage/DisplayData';
 
 const data = [
     { ticker: 'MSFT', companyName: 'Microsoft', currMarketPrice: '250.33', percentInPriceChange: '3.72' },
@@ -17,7 +15,6 @@ export const SearchBarScreen = () => {
     const [search, setSearch] = useState('');
     const [list, setList] = useState(data);
     const [toggle, setToggle] = useState(true);
-
 
     const renderList = useCallback(() => {
         let filtered = list.filter(
@@ -37,59 +34,36 @@ export const SearchBarScreen = () => {
     const sortList = useCallback((key) => {
         let unsortedList = [...list];
         switch (key) {
-            /* Sorts in alphabetical order, if A (second element) is less than B (first element), it should return -1 because 
-                we would want them to swap places, if A is smaller, it means it is higher in the alphabet (closer to the letter a)
-                */
-            case 'TickerAlphabetic':
-                unsortedList.sort((a, b) => (a.ticker) < (b.ticker) ? -1 : 1)
+            case 'Ticker':
+                toggle ?
+                    /* Sorts in alphabetical order, if A (second element) is less than B (first element), it should return 1 because 
+                       we would want them to swap places, if A is smaller, it means it is higher in the alphabet (closer to the letter a)
+                       therefore it should be one of the last elements in reverse alphabet order
+                     */
+                    unsortedList.sort((a, b) => (a.ticker) < (b.ticker) ? 1 : -1) :
+                    /* Sorts in alphabetical order, if A (second element) is less than B (first element), it should return -1 because 
+                       we would want them to swap places, if A is smaller, it means it is higher in the alphabet (closer to the letter a) */
+                    unsortedList.sort((a, b) => (a.ticker) < (b.ticker) ? -1 : 1)
                 break
-            /* Sorts in alphabetical order, if A (second element) is less than B (first element), it should return 1 because 
-            we would want them to swap places, if A is smaller, it means it is higher in the alphabet (closer to the letter a)
-            therefore it should be one of the last elements in reverse alphabet order
-            */
-            case 'TickerReverseAlphabetic':
-                unsortedList.sort((a, b) => (a.ticker) < (b.ticker) ? 1 : -1);
+            case 'Company':
+                toggle ?
+                    unsortedList.sort((a, b) => (a.companyName) < (b.companyName) ? 1 : -1) :
+                    unsortedList.sort((a, b) => (a.companyName) < (b.companyName) ? -1 : 1)
                 break
-            case 'CompanyNameAlphabetic':
-                unsortedList.sort((a, b) => (a.companyName) < (b.companyName) ? -1 : 1)
+            case 'Price':
+                toggle ?
+                    unsortedList.sort((a, b) => (b.currMarketPrice) - (a.currMarketPrice)) :
+                    unsortedList.sort((a, b) => (a.currMarketPrice) - (b.currMarketPrice))
                 break
-            case 'CompanyNamReverseeAlphabetic':
-                unsortedList.sort((a, b) => (a.companyName) < (b.companyName) ? 1 : -1)
-                break
-            case 'currMarketPriceAlphabetic':
-                unsortedList.sort((a, b) => (a.currMarketPrice) - (b.currMarketPrice))
-                break
-            case 'currMarketPriceReverseAlphabetic':
-                unsortedList.sort((a, b) => (b.currMarketPrice) - (a.currMarketPrice))
-                break
-            case 'percentInPriceChangeAlphabetic':
-                unsortedList.sort((a, b) => (a.percentInPriceChange) - (b.percentInPriceChange))
-                break
-            case 'percentInPriceChangeReverseAlphabetic':
-                unsortedList.sort((a, b) => (b.percentInPriceChange) - (a.percentInPriceChange))
+            case 'Change':
+                toggle ?
+                    unsortedList.sort((a, b) => (b.percentInPriceChange) - (a.percentInPriceChange)) :
+                    unsortedList.sort((a, b) => (a.percentInPriceChange) - (b.percentInPriceChange))
                 break
         }
         setList(unsortedList)
-    },
-        [list],
-    );
-
-    const toggleFunction = () => {
-        setToggle(!toggle);
-    }
-    const toggleTinker = () => {
-        toggleFunction(toggle ? sortList('TickerAlphabetic') : sortList('TickerReverseAlphabetic'))
-    };
-
-    const toggleCompanyName = () => {
-        toggleFunction(toggle ? sortList('CompanyNameAlphabetic') : sortList('CompanyNamReverseeAlphabetic'))
-    };
-    const toggleCurrMarketPrice = () => {
-        toggleFunction(toggle ? sortList('currMarketPriceAlphabetic') : sortList('currMarketPriceReverseAlphabetic'))
-    };
-    const togglePercentChangeInPrice = () => {
-        toggleFunction(toggle ? sortList('percentInPriceChangeAlphabetic') : sortList('percentInPriceChangeReverseAlphabetic'))
-    };
+        setToggle(!toggle)
+    }, [list, toggle]);
 
     return (
         <View style={styles.container}>
@@ -99,20 +73,27 @@ export const SearchBarScreen = () => {
             />
             <View style={styles.buttonsContainer}>
                 <Button style={styles.button}
-                    onPress={toggleTinker}
-                    title="Ticker">
+                    title="Ticker"
+                    onPress={() => sortList('Ticker')}
+                >
+
                 </Button>
                 <Button style={styles.buttons}
-                    onPress={toggleCompanyName}
-                    title="Company">
+                    title="Company"
+                    onPress={() => sortList('Company')}
+                >
                 </Button>
                 <Button style={styles.buttons}
-                    onPress={toggleCurrMarketPrice}
-                    title="Price">
+                    title="Price"
+                    onPress={() => sortList('Price')}
+                >
+
                 </Button>
                 <Button style={styles.buttons}
-                    onPress={togglePercentChangeInPrice}
-                    title="Change">
+                    title="Change"
+                    onPress={() => sortList('Change')}
+                >
+
                 </Button>
             </View>
             <ScrollView style={styles.listOfItems}>

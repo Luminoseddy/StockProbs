@@ -1,32 +1,23 @@
 import 'react-native-gesture-handler';
 import { useContext, useEffect, useState, React } from 'react';
-
-
 import { NavigationContainer, CommonActions } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, ImageBackground, StyleSheet, Button, SafeAreaView, ScrollView, ActivityIndicator, } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import Favorites from './screens/FavoritesScreen';
 import Home from './screens/HomeScreen';
-import Explore from './screens/ExploreScreen';
 import Settings from './screens/SettingsScreen';
 import { SearchBarScreen } from "./screens/SearchBarScreen";
-import TopMovers from './screens/TopMoversScreen'
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyProfile from './screens/MyProfileScreen';
-
 import { createStackNavigator } from '@react-navigation/stack'
 
-
-
-state = { active: null };
+// state = { active: null };
 const Stack = createStackNavigator()
 const DrawerStack = createDrawerNavigator()
 const BottomStack = createBottomTabNavigator()
