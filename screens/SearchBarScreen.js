@@ -6,7 +6,7 @@ import { Item } from '../dataStorage/DisplayData';
 
 const data = [
     { ticker: 'MSFT', companyName: 'Microsoft', currMarketPrice: '250.33', percentInPriceChange: '3.72' },
-    { ticker: 'APPL', companyName: 'Apple', currMarketPrice: '150.41', percentInPriceChange: '2.42' },
+    { ticker: 'AAPL', companyName: 'Apple', currMarketPrice: '150.41', percentInPriceChange: '2.42' },
     { ticker: 'GOOG', companyName: 'Google', currMarketPrice: '99.34', percentInPriceChange: '0.32' },
     { ticker: 'TSLA', companyName: 'Tesla', currMarketPrice: '193.11', percentInPriceChange: '1.62' },
 ]

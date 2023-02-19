@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { StyleSheet, Text, View, ActivityIndicator, FlatList, } from 'react-native';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from '../dataStorage/auth-context';
+import { fetchStock } from '../components/apiCalls/Stock';
 
 // Screen only for authenticated users.
 export default function HomeScreen() {
@@ -10,22 +11,7 @@ export default function HomeScreen() {
   authCtx = useContext(AuthContext);
   const token = authCtx.token;
   const [isLoading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-
-  const API_KEY ="HTYs0D0MJ4S2if3jtVRkMyIp_7EZ5iZU"
-
-  const getStocks = async () => {
-    try {
-      // fetch - https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2023-01-09/2023-01-09?apiKey=HTYs0D0MJ4S2if3jtVRkMyIp_7EZ5iZU
-      const response = await fetch('https://reactnative.dev/movies.json');
-      const json = await response.json();
-      setData(json.movies);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [data, setData] = useState(null);
 
   // execute when component is loaded - sends GET request
   // get data from 'message node' firebase
@@ -38,31 +24,47 @@ export default function HomeScreen() {
     });
   }, [token]);
 
+  const fetchData = useCallback(() => {
+    fetchStock().then((data) => {
+      //call data modifier n whatever is return call setData(modifiedData)
+      setData(data)
+      setLoading(false)
+      console.log(data);
+    }).catch((error) => console.log(error));
+
+  }, []);
+
   useEffect(() => {
-    if (!isLoading && (!data || data.length < 1)) {
-      setLoading(true)
-      getStocks();
+    if (!data) {
+      fetchData()
     }
-  }, [getStocks, isLoading, data]);
+  }, [data, fetchData]);
+
+  useEffect(() => {
+    if (!isLoading && !data) {
+      setLoading(true)
+    }
+  }, [isLoading, data]);
+
 
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.title}>Home!</Text>
       <Text>You authenticated successfully!</Text>
       <Text>{fetchedMessage}</Text>
-      {isLoading ? (
-        <ActivityIndicator animating={isLoading} />
-      ) : (
-        <FlatList
-          data={data}
-          keyExtractor={({ id }) => id}
-          renderItem={({ item }) => (
-            <Text>
-              {item.title}, {item.releaseYear}
-            </Text>
-          )}
-        />
-      )}
+      
+      {/* {isLoading ? (<ActivityIndicator animating={isLoading} />) :
+        (
+          <FlatList
+            data={data}
+            keyExtractor={({ id }) => id}
+            renderItem={({ item }) => (
+              <Text>
+                {item.title}, {item.releaseYear}
+              </Text>
+            )}
+          />
+        )} */}
     </View>
   );
 }

@@ -17,6 +17,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyProfile from './screens/MyProfileScreen';
 import { createStackNavigator } from '@react-navigation/stack'
 
+
 // state = { active: null };
 const Stack = createStackNavigator()
 const DrawerStack = createDrawerNavigator()
@@ -143,8 +144,12 @@ function AppBottomStack() {
 function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
   return (
+    
     <Stack.Navigator screenOptions={{ headerShown: false, }}>
+      
       <Stack.Screen name="Logged in" component={AppDrawerStack} options={{ title: "Home", }} />
+      
+
     </Stack.Navigator>
   );
 }
