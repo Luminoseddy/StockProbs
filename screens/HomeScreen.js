@@ -7,11 +7,13 @@ import { fetchStock } from '../components/apiCalls/Stock';
 // Screen only for authenticated users.
 export default function HomeScreen() {
   const [fetchedMessage, setFetchedMessage] = useState('');
-
   authCtx = useContext(AuthContext);
   const token = authCtx.token;
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+
+  let openList = []
+
 
   // execute when component is loaded - sends GET request
   // get data from 'message node' firebase
@@ -24,12 +26,16 @@ export default function HomeScreen() {
     });
   }, [token]);
 
+  
   const fetchData = useCallback(() => {
     fetchStock().then((data) => {
       //call data modifier n whatever is return call setData(modifiedData)
-      setData(data)
+      for (var key in data['Time Series (Daily)']) {
+        openList.push(data['Time Series (Daily)'][key]['1. open'])
+        // console.log(data['Time Series (Daily)'][key]['1. open']);// Prints all data of stock.
+      }
+      setData(openList)
       setLoading(false)
-      console.log(data);
     }).catch((error) => console.log(error));
 
   }, []);
@@ -46,25 +52,22 @@ export default function HomeScreen() {
     }
   }, [isLoading, data]);
 
-
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.title}>Home!</Text>
       <Text>You authenticated successfully!</Text>
       <Text>{fetchedMessage}</Text>
-      
-      {/* {isLoading ? (<ActivityIndicator animating={isLoading} />) :
+      {isLoading ? (<ActivityIndicator animating={isLoading} />) :
         (
-          <FlatList
+          <FlatList style={styles.listOfData}
             data={data}
-            keyExtractor={({ id }) => id}
             renderItem={({ item }) => (
               <Text>
-                {item.title}, {item.releaseYear}
+                ${item}
               </Text>
             )}
           />
-        )} */}
+        )}
     </View>
   );
 }
@@ -81,6 +84,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
   },
+  listOfData: {
+    width: '100%'
+},
 });
 
 // -- Home screen

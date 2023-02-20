@@ -9,12 +9,7 @@ export const Item = ({
   percentInPriceChange
 }) => {
 
-  
-
   return (
-  
-
-    
     <View style={styles.container}>
       <Text style={styles.text}>${ticker}</Text>
       <Text style={styles.text}>{companyName}</Text>
