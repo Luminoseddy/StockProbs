@@ -1,8 +1,5 @@
 import { View, Text } from "react-native";
 
-
-
-import Favorites from './FavoritesScreen'
 export default function TopMovers({ navigation }) {
 
 

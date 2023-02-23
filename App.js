@@ -8,9 +8,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
-import Favorites from './screens/FavoritesScreen';
+import WatchList from './screens/WatchListScreen';
 import Home from './screens/HomeScreen';
 import Settings from './screens/SettingsScreen';
+import  CsvUploadScreen  from './screens/CsvUploadScreen';
 import { SearchBarScreen } from "./screens/SearchBarScreen";
 import AuthContextProvider, { AuthContext } from './dataStorage/auth-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -71,6 +72,7 @@ function AppDrawerStack({ navigation }) {
       <DrawerStack.Screen name='Logo2Home' component={AppBottomStack} />
       <DrawerStack.Screen name='MyProfile' component={MyProfile} />
       <DrawerStack.Screen name='Settings' component={Settings} />
+      <DrawerStack.Screen name='CsvUpload' component={CsvUploadScreen} />
       <DrawerStack.Screen name='Search' component={SearchBarScreen} />
     </DrawerStack.Navigator >
 
@@ -105,6 +107,11 @@ function DrawerView({ navigation }) {
         />
 
         <Button style={styles.buttons}
+          onPress={() => navigation.navigate('CsvUpload')}
+          title="Upload Data"
+        />
+
+        <Button style={styles.buttons}
           title="Logout"
           color={"red"}
           onPress={authCtx.logout}
@@ -131,8 +138,8 @@ function AppBottomStack() {
 
 
       <BottomStack.Screen
-        name="Favorites"
-        component={Favorites}
+        name="WatchList"
+        component={WatchList}
       />
 
     </BottomStack.Navigator>
@@ -144,11 +151,11 @@ function AppBottomStack() {
 function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
   return (
-    
+
     <Stack.Navigator screenOptions={{ headerShown: false, }}>
-      
+
       <Stack.Screen name="Logged in" component={AppDrawerStack} options={{ title: "Home", }} />
-      
+
 
     </Stack.Navigator>
   );

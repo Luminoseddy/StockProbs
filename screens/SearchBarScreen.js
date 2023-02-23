@@ -120,9 +120,6 @@ const styles = StyleSheet.create({
         paddingRight: 25,
 
     },
-    buttons: {
-
-    },
     searchBar: {
         fontSize: 24,
         margin: 10,

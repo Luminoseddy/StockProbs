@@ -12,6 +12,8 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		645052B129A5C5300086E6CB /* react-native-fs in Resources */ = {isa = PBXBuildFile; fileRef = 645052B029A5C5300086E6CB /* react-native-fs */; };
+		645052B329A5C6D80086E6CB /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 645052B229A5C6D80086E6CB /* libRNFS.a */; };
 		7699B88040F8A987B510C191 /* libPods-StockProbs-StockProbsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-StockProbs-StockProbsTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -41,6 +43,8 @@
 		5709B34CF0A7D63546082F79 /* Pods-StockProbs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockProbs.release.xcconfig"; path = "Target Support Files/Pods-StockProbs/Pods-StockProbs.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-StockProbs-StockProbsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockProbs-StockProbsTests.debug.xcconfig"; path = "Target Support Files/Pods-StockProbs-StockProbsTests/Pods-StockProbs-StockProbsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-StockProbs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StockProbs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		645052B029A5C5300086E6CB /* react-native-fs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "react-native-fs"; path = "../node_modules/react-native-fs"; sourceTree = "<group>"; };
+		645052B229A5C6D80086E6CB /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = StockProbs/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-StockProbs-StockProbsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockProbs-StockProbsTests.release.xcconfig"; path = "Target Support Files/Pods-StockProbs-StockProbsTests/Pods-StockProbs-StockProbsTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -59,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				645052B329A5C6D80086E6CB /* libRNFS.a in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-StockProbs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +104,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				645052B229A5C6D80086E6CB /* libRNFS.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-StockProbs.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-StockProbs-StockProbsTests.a */,
@@ -109,6 +115,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				645052B029A5C5300086E6CB /* react-native-fs */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -244,6 +251,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				645052B129A5C5300086E6CB /* react-native-fs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
